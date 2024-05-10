@@ -5,7 +5,7 @@ on:
     paths:
       - '**'
     branches:
-      - 'main'
+      - 'dev'
 
 jobs:
   build-docs-images:
@@ -48,6 +48,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PAT }}
+
+      - name: change config dir
+        run: |-
+          sed -i "s#/config.toml\"#/storage/config.toml\"#g" ./app/config/config.py
 
       - name: Build and push Docker images to ghcr.io and DockerHub
         uses: docker/build-push-action@v5
